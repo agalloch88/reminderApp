@@ -1,12 +1,12 @@
 import { formatJSONResponse } from "@libs/apiGateway";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { v4 as uuid } from 'uuid';
-import { dynamo } from '@libs/dynamo';
+import { v4 as uuid } from "uuid";
+import { dynamo } from "@libs/dynamo";
 
 export const handler = async (event: APIGatewayProxyEvent) => {
   try {
     const body = JSON.parse(event.body);
-    const tableName = process.env.urlTable;
+    const tableName = process.env.reminderTable;
     const baseUrl = process.env.baseUrl;
     const originalUrl = body.url;
 
@@ -14,14 +14,14 @@ export const handler = async (event: APIGatewayProxyEvent) => {
     const shortUrl = `${baseUrl}/${code}`;
 
     const data = {
-        id: code,
-        shortUrl,
-        originalUrl,
+      id: code,
+      shortUrl,
+      originalUrl,
     };
 
     await dynamo.write(data, tableName);
 
-    return formatJSONResponse({ data: {shortUrl, originalUrl}});
+    return formatJSONResponse({ data: { shortUrl, originalUrl } });
   } catch (error) {
     console.log(error);
     return formatJSONResponse({

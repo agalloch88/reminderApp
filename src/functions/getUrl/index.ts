@@ -1,26 +1,30 @@
 import { formatJSONResponse } from "@libs/apiGateway";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { dynamo } from '@libs/dynamo';
+import { dynamo } from "@libs/dynamo";
 
 export const handler = async (event: APIGatewayProxyEvent) => {
   try {
-    const tableName = process.env.urlTable;
+    const tableName = process.env.reminderTable;
     const { code } = event.pathParameters || {};
 
     if (!code) {
-        return formatJSONResponse({
-            statusCode: 400,
-            data: {
-            message: 'Missing code in path',
-            },
-        });
+      return formatJSONResponse({
+        statusCode: 400,
+        data: {
+          message: "Missing code in path",
+        },
+      });
     }
-    
+
     const record = await dynamo.get(code, tableName);
 
     const originalUrl = record.originalUrl;
 
-    return formatJSONResponse({ data: { }, statusCode: 301, headers: { Location: originalUrl}});
+    return formatJSONResponse({
+      data: {},
+      statusCode: 301,
+      headers: { Location: originalUrl },
+    });
   } catch (error) {
     console.log(error);
     return formatJSONResponse({
