@@ -4,7 +4,7 @@ const dynamoResources: AWS["resources"]["Resources"] = {
   urlTable: {
     Type: "AWS::DynamoDB::Table",
     Properties: {
-      TableName: "${self:custom.urlTableName}",
+      TableName: "${self:custom.reminderTable}",
       AttributeDefinitions: [
         {
           AttributeName: "id",
