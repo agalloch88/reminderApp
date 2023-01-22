@@ -3,7 +3,7 @@ import functions from "./serverless/functions";
 import dynamoResources from "./serverless/dynamoResources";
 
 const serverlessConfiguration: AWS = {
-  service: "urlshortener",
+  service: "reminderapp",
   frameworkVersion: "3",
   plugins: ["serverless-esbuild"],
   provider: {
