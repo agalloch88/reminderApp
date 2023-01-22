@@ -49,7 +49,7 @@ const serverlessConfiguration: AWS = {
   },
   package: { individually: true },
   custom: {
-    reminderTable: "${sls:stage}-url-table",
+    reminderTable: "${sls:stage}-reminder-table",
     esbuild: {
       bundle: true,
       minify: false,
