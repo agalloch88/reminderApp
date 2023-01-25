@@ -28,7 +28,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
       id: uuid(),
       // importantly, need to divide the reminderDate by 1000 to convert to seconds
       TTL: reminderDate / 1000,
-      // partitionm key is userId, sort key is reminderDate
+      // partition key is userId, sort key is reminderDate
       pk: userId,
       sk: reminderDate.toString(),
     };
