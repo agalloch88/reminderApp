@@ -20,11 +20,22 @@ export const handler = async (event: APIGatewayProxyEvent) => {
       return validationErrors;
     }
 
-    const data = {};
+    const userId = email || phoneNumber;
+
+    const data = {
+      ...body,
+      id: uuid(),
+      TTL: reminderDate / 1000,
+      pk: userId,
+      sk: reminderDate.toString(),
+    };
 
     await dynamo.write(data, tableName);
 
-    return formatJSONResponse({ data: {} });
+    return formatJSONResponse({ data: {
+      message: `Reminder created for${userId} on ${new Date(reminderDate).toDateString()}`,
+      id: data.id,
+    } });
   } catch (error) {
     console.log(error);
     return formatJSONResponse({
