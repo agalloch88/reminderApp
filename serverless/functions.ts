@@ -21,6 +21,7 @@ const functions: AWS["functions"] = {
           arn: {
             "Fn::GetAtt": ["reminderTable", "StreamArn"],
           },
+          filterPatterns: [{ eventName: ["REMOVE"] }],
         },
       },
     ],
