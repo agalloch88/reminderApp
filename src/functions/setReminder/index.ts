@@ -35,7 +35,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
     await dynamo.write(data, tableName);
 
     return formatJSONResponse({ data: {
-      message: `Reminder created for${userId} on ${new Date(reminderDate).toDateString()}`,
+      message: `Reminder created for ${userId} on ${new Date(reminderDate).toDateString()}`,
       id: data.id,
     } });
   } catch (error) {
