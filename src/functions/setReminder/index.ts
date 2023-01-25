@@ -9,22 +9,24 @@ export const handler = async (event: APIGatewayProxyEvent) => {
     const tableName = process.env.reminderTable;
     const { email, phoneNumber, reminder, reminderDate } = body;
 
+    // call validateInputs function with params from the body, store in variable validationErrors
     const validationErrors = validateInputs({
       email,
       phoneNumber,
       reminder,
       reminderDate,
     });
-
+    // if there are any validation errors, return them
     if (validationErrors) {
       return validationErrors;
     }
-
+    // if there are no validation errors, create a userId variable, which will hold either email or phone
     const userId = email || phoneNumber;
-
+    // create structure for data to be written to dynamo
     const data = {
       ...body,
       id: uuid(),
+      // importantly, need to divide the reminderDate by 1000 to convert to seconds
       TTL: reminderDate / 1000,
       pk: userId,
       sk: reminderDate.toString(),
@@ -47,6 +49,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
   }
 };
 
+// function to validate the inputs, if any of the inputs are missing, return an error
 const validateInputs = ({
   email,
   phoneNumber,
