@@ -6,8 +6,10 @@ import {
   SendEmailCommand,
   SendEmailCommandInput,
 } from "@aws-sdk/client-ses";
+import { SNSClient, PublishCommand, PublishCommandInput } from "@aws-sdk/client-sns";
 
 const sesClient = new SESClient({});
+const snsClient = new SNSClient({});
 
 export const handler = async (event: DynamoDBStreamEvent) => {
   try {
@@ -61,5 +63,21 @@ const sendEmail = async ({
   const command = new SendEmailCommand(params);
 
   const res = await sesClient.send(command);
+  return res.MessageId;
+};
+
+const sendSMS = async ({
+  phoneNumber,
+  reminder,
+}: {
+  phoneNumber: string;
+  reminder: string;
+}) => {
+  const params: PublishCommandInput = {
+    Message: reminder,
+    PhoneNumber: phoneNumber,
+  };
+  const command = new PublishCommand(params);
+  const res = await snsClient.send(command);
   return res.MessageId;
 };
