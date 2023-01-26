@@ -1,6 +1,7 @@
 import { DynamoDBStreamEvent } from "aws-lambda";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import { SendEmailCommand } from "@aws-sdk/client-ses";
 
 export const handler = async (event: DynamoDBStreamEvent) => {
   try {
@@ -23,3 +24,11 @@ export const handler = async (event: DynamoDBStreamEvent) => {
     
   }
 };
+
+const sendEmail = async ({email, reminder}: { email: string, reminder: string}) => {
+  const params = {
+
+  };
+
+  const command = new SendEmailCommand(params);
+}
