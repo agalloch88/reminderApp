@@ -34,6 +34,17 @@ const functions: AWS["functions"] = {
       },
     ],
   },
+  getReminders: {
+    handler: "src/functions/getReminders/index.handler",
+    events: [
+      {
+        httpApi: {
+          path: "/{userId}",
+          method: "get",
+        },
+      },
+    ],
+  },
 };
 
 export default functions;
