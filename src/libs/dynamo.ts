@@ -10,6 +10,7 @@ import {
 
 const dyanmoClient = new DynamoDBClient({});
 export const dynamo = {
+  // Write data to a table
   write: async (data: Record<string, any>, tableName: string) => {
     const params: PutCommandInput = {
       TableName: tableName,
@@ -21,6 +22,7 @@ export const dynamo = {
 
     return data;
   },
+  // Read data from a table
   get: async (id: string, tableName: string) => {
     const params: GetCommandInput = {
       TableName: tableName,
@@ -33,6 +35,7 @@ export const dynamo = {
 
     return response.Item;
   },
+  // Query a table
   query: async ({
     tableName,
     index,
@@ -50,6 +53,7 @@ export const dynamo = {
     skKey?: string;
     sortAscending?: boolean;
   }) => {
+    // If there is a sort key, add it to the query
     const skExpression = skValue ? ` and ${skKey} = :rangeValue` : "";
 
     const params: QueryCommandInput = {
@@ -60,7 +64,7 @@ export const dynamo = {
         ":hashValue": pkValue,
       },
     };
-
+    // If there is a sort key expression, add it to the params
     if (skValue) {
       params.ExpressionAttributeValues[":rangeValue"] = skValue;
     }
